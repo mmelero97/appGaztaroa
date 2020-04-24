@@ -56,9 +56,6 @@ class QuienesSomos extends Component {
     }
 
     render() {
-
-
-
         return (
             <ScrollView>
                 <Historia />
