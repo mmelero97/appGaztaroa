@@ -4,7 +4,7 @@ import { ListItem } from 'react-native-elements';
 import { Text, ScrollView, View } from 'react-native';
 import { Card } from 'react-native-elements';
 import { ACTIVIDADES } from '../comun/actividades';
-
+import {baseUrl} from '../comun/comun';
 
 function Historia() {
     return (
@@ -29,7 +29,7 @@ function RenderActividades(props) {
                 title={item.nombre}
                 subtitle={item.descripcion}
                 hideChevron={true}
-                leftAvatar={{ source: require('./imagenes/40Años.png') }}
+                leftAvatar= {{source: baseUrl + item.imagen}}
             />
         );
     }
