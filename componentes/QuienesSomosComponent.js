@@ -3,8 +3,14 @@ import { FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Text, ScrollView, View } from 'react-native';
 import { Card } from 'react-native-elements';
-import { ACTIVIDADES } from '../comun/actividades';
-import {baseUrl} from '../comun/comun';
+import { baseUrl } from '../comun/comun';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    return {
+        actividades: state.actividades
+    }
+}
 
 function Historia() {
     return (
@@ -46,23 +52,15 @@ function RenderActividades(props) {
     );
 }
 
-
 class QuienesSomos extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            actividades: ACTIVIDADES
-        };
-    }
-
     render() {
         return (
             <ScrollView>
                 <Historia />
-                <RenderActividades item={this.state.actividades} />
+                <RenderActividades item={this.props.actividades.actividades} />
             </ScrollView>
         );
     };
 }
 
-export default QuienesSomos;
+export default connect(mapStateToProps)(QuienesSomos);

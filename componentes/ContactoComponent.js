@@ -3,11 +3,6 @@ import { Text, View } from 'react-native';
 import { Card } from 'react-native-elements';
 
 class Contacto extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
 
     render() {
 

@@ -11,14 +11,31 @@ import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import Constants from 'expo-constants';
-import {colorGaztaroaClaro, colorGaztaroaOscuro} from '../comun/comun';
-
+import { colorGaztaroaClaro, colorGaztaroaOscuro } from '../comun/comun';
+import { connect } from 'react-redux';
+import { fetchExcursiones, fetchComentarios, fetchCabeceras, fetchActividades } from '../redux/ActionCreators';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+const mapStateToProps = state => {
+    return {
+        excursiones: state.excursiones,
+        comentarios: state.comentarios,
+        cabeceras: state.cabeceras,
+        actividades: state.actividades
+    }
+}
 
-function CalendarioNavegador({navigation}) {
+const mapDispatchToProps = dispatch => ({
+    fetchExcursiones: () => dispatch(fetchExcursiones()),
+    fetchComentarios: () => dispatch(fetchComentarios()),
+    fetchCabeceras: () => dispatch(fetchCabeceras()),
+    fetchActividades: () => dispatch(fetchActividades()),
+})
+
+
+function CalendarioNavegador({ navigation }) {
     return (
         <Stack.Navigator
             initialRouteName="Calendario"
@@ -36,7 +53,7 @@ function CalendarioNavegador({navigation}) {
                     title: 'Calendario Gaztaroa',
                     headerLeft: () => (<Icon name="menu" size={28} color='white' onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />),
                 }}
-                
+
             />
             <Stack.Screen
                 name="DetalleExcursion"
@@ -49,7 +66,7 @@ function CalendarioNavegador({navigation}) {
     );
 }
 
-function HomeNavegador({navigation}) {
+function HomeNavegador({ navigation }) {
     return (
         <Stack.Navigator
             initialRouteName="Home"
@@ -72,7 +89,7 @@ function HomeNavegador({navigation}) {
     );
 }
 
-function ContactoNavegador({navigation}) {
+function ContactoNavegador({ navigation }) {
     return (
         <Stack.Navigator
             initialRouteName="Contacto"
@@ -95,7 +112,7 @@ function ContactoNavegador({navigation}) {
     );
 }
 
-function QuienesSomosNavegador({navigation}) {
+function QuienesSomosNavegador({ navigation }) {
     return (
         <Stack.Navigator
             initialRouteName="QuienesSomos"
@@ -194,6 +211,13 @@ function DrawerNavegador() {
 }
 
 class Campobase extends Component {
+    componentDidMount() {
+        this.props.fetchExcursiones();
+        this.props.fetchComentarios();
+        this.props.fetchCabeceras();
+        this.props.fetchActividades();
+    }
+
     render() {
 
         return (
@@ -231,4 +255,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Campobase;
+export default connect(mapStateToProps, mapDispatchToProps)(Campobase);
