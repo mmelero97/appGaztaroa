@@ -3,7 +3,7 @@ import { FlatList, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { baseUrl } from '../comun/comun';
 import { connect } from 'react-redux';
-import { Swipeout } from 'react-native-swipeout';
+import Swipeout from 'react-native-swipeout';
 import {borrarFavorito} from "../redux/ActionCreators";
 
 
@@ -28,6 +28,11 @@ class VistaFavoritos extends Component {
 
     render() {
         
+        //let excursiones_favs = [];
+        //this.props.favoritos.map((favorito, index) => {
+        //    excursiones_favs.push(this.props.excursiones.excursiones[favorito]);
+        //});
+
         const renderFavoritoItem = ({ item, index }) => {
             const { navigate } = this.props.navigation;
 
@@ -46,6 +51,7 @@ class VistaFavoritos extends Component {
                                     )
                 }
             ];
+            
             return(
                 <Swipeout right={rightButton} autoClose={true}>
                     <ListItem
@@ -72,6 +78,7 @@ class VistaFavoritos extends Component {
 
         return(
             <FlatList
+                //data={excursiones_favs}
                 data={this.props.excursiones.excursiones.filter(
                     excursion => this.props.favoritos.some(el => el === excursion.id)
                 )}
