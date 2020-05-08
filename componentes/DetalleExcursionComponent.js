@@ -105,7 +105,6 @@ class DetalleExcursion extends Component {
     }
 
     closeModal() {
-        //this.setState({ display: false });
         this.setState({
             display: false,
             rate: "3",
