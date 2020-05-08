@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Modal } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
+import { Text, View, ScrollView, FlatList, Modal, Alert, StyleSheet } from 'react-native';
+import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { baseUrl } from '../comun/comun';
 import { connect } from 'react-redux';
-import { postFavorito } from '../redux/ActionCreators';
+import { postFavorito, postComentario } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -14,7 +14,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    postFavorito: (excursionId) => dispatch(postFavorito(excursionId))
+    postFavorito: (excursionId) => dispatch(postFavorito(excursionId)),
+    //postComentario: (excursionId, rate, autor, comentario) => dispatch(postComentario(excursionId, rate, autor, comentario))
+    postComentario: (comentario) => dispatch(postComentario(comentario))
 })
 
 
@@ -86,7 +88,10 @@ class DetalleExcursion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            display: false
+            display: false,
+            rate: "3",
+            autor: "",
+            comentario: ""
         };
     }
 
@@ -99,8 +104,40 @@ class DetalleExcursion extends Component {
         console.log("Lanzando Modal");
     }
 
+    closeModal() {
+        //this.setState({ display: false });
+        this.setState({
+            display: false,
+            rate: "3",
+            autor: "",
+            comentario: ""
+        });
+    }
+
+    enviarDatos(excursionId) {
+        const fecha = new Date(Date.now()).toISOString();
+        const comentario = {
+            id: null,
+            excursionId: excursionId, 
+            valoracion: this.state.rate,
+            autor: this.state.autor,
+            comentario: this.state.comentario,
+            dia: fecha
+        }
+
+        //console.log(comentario);
+        this.props.postComentario(comentario);
+
+        this.setState({
+            display: false,
+            rate: "3",
+            autor: "",
+            comentario: ""
+        });
+    }
+
     render() {
-        console.log(this.state.display);
+        //console.log(this.state.rate);
         const { excursionId } = this.props.route.params;
         return (
             <ScrollView>
@@ -116,16 +153,42 @@ class DetalleExcursion extends Component {
 
                 <Modal
                     animationType="slide"
-                    transparent={true}
+                    transparent={false}
                     visible={this.state.display}
                     onRequestClose={() => {
                         Alert.alert("Modal has been closed.");
                     }}
                 >
-                    <View>
-                        <Text>
-                            Hola! Soy un modal :)
+                    <View style={styles.modal}>
+                        <Rating
+                            showRating
+                            defaultRating={3}
+                            fractions={0}
+                            ratingCount={5}
+                            onFinishRating={rating => this.setState({ rate: rating })} />
+
+                        <Input
+                            style={styles.entradas}
+                            placeholder="Autor"
+                            leftIcon={{ type: 'font-awesome', name: 'user' }}
+                            onChangeText={value => this.setState({ autor: value })}
+                        />
+
+                        <Input
+                            style={styles.entradas}
+                            placeholder="Comentario"
+                            leftIcon={{ type: 'font-awesome', name: 'pencil' }}
+                            onChangeText={value => this.setState({ comentario: value })}
+                        />
+
+                        <Text onPress={() => this.enviarDatos(excursionId)} style={styles.text}>
+                            ENVIAR
                         </Text>
+                        <Text onPress={() => this.closeModal()} style={styles.text}>
+                            CANCELAR
+                        </Text>
+
+
                     </View>
                 </Modal>
 
@@ -133,5 +196,28 @@ class DetalleExcursion extends Component {
         );
     }
 }
+
+
+const styles = StyleSheet.create({
+    text: {
+        fontSize: 22,
+        textAlign: 'center',
+        color: "blue",
+        marginBottom: 3
+    },
+
+    entradas: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+
+    },
+    modal: {
+        flex: 1,
+        margin: 30
+    }
+
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetalleExcursion);
