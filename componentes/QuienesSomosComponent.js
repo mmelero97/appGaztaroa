@@ -6,6 +6,7 @@ import { ListItem } from 'react-native-elements';
 import { baseUrl } from '../comun/comun';
 import { connect } from 'react-redux';
 import { IndicadorActividad } from './IndicadorActividadComponent';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -15,6 +16,7 @@ const mapStateToProps = state => {
 
 function Historia() {
     return (
+
         <Card title="Un poquito de historia"
             featuredTitle="Quiénes somos">
             <Text style={{ margin: 10 }}>
@@ -67,13 +69,15 @@ class QuienesSomos extends Component {
 
             return (
                 <ScrollView>
-                    <Card title="Actividades y recursos">
-                        <FlatList
-                            data={this.props.actividades.actividades}
-                            renderItem={renderActividadItem}
-                            keyExtractor={item => item.id.toString()}
-                        />
-                    </Card>
+                    <Animatable.View animation="shake" duration={2000} delay={500}>
+                        <Card title="Actividades y recursos">
+                            <FlatList
+                                data={this.props.actividades.actividades}
+                                renderItem={renderActividadItem}
+                                keyExtractor={item => item.id.toString()}
+                            />
+                        </Card>
+                    </Animatable.View>
                 </ScrollView>
             );
         }
