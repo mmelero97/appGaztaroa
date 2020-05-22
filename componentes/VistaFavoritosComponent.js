@@ -59,7 +59,7 @@ class VistaFavoritos extends Component {
                         title={item.nombre}
                         subtitle={item.descripcion}
                         hideChevron={true}
-                        leftAvatar={{source: {uri: baseUrl + item.imagen} }}
+                        leftAvatar={{source: {uri: item.imagen} }}
                         onPress={() => navigate("DetalleExcursion", { excursionId: item.id })}
                         onLongPress={ () => Alert.alert(
                                                 'Borrar excursión favorita?',

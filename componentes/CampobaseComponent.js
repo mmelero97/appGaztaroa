@@ -16,6 +16,20 @@ import Constants from 'expo-constants';
 import { colorGaztaroaClaro, colorGaztaroaOscuro } from '../comun/comun';
 import { connect } from 'react-redux';
 import { fetchExcursiones, fetchComentarios, fetchCabeceras, fetchActividades } from '../redux/ActionCreators';
+import * as firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "api-key",
+    //authDomain: "project-id.firebaseapp.com",
+    databaseURL: "https://marta-bbdd.firebaseio.com/",
+    projectId: "marta-bbdd",
+    //storageBucket: "project-id.appspot.com",
+    //messagingSenderId: "sender-id",
+    //appId: "app-id",
+    //measurementId: "G-measurement-id"
+  };
+  
+firebase.initializeApp(firebaseConfig);
 
 const mapStateToProps = state => {
     return {

@@ -81,7 +81,7 @@ function RenderExcursion(props) {
 
                 <Card
                     featuredTitle={excursion.nombre}
-                    image={{ uri: baseUrl + excursion.imagen }}>
+                    image={{ uri: excursion.imagen }}>
                     <Text style={{ margin: 10 }}>
                         {excursion.descripcion}
                     </Text>

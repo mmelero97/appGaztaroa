@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { baseUrl } from '../comun/comun';
 import { connect } from 'react-redux';
@@ -41,7 +41,7 @@ class QuienesSomos extends Component {
                     title={item.nombre}
                     subtitle={item.descripcion}
                     hideChevron={true}
-                    leftAvatar={{ source: { uri: baseUrl + item.imagen } }}
+                    leftAvatar={{ source: { uri: item.imagen } }}
                 />
             );
         };
