@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import { fetchExcursiones, fetchComentarios, fetchCabeceras, fetchActividades } from '../redux/ActionCreators';
 import * as firebase from 'firebase';
 
+
 const firebaseConfig = {
     apiKey: "api-key",
     //authDomain: "project-id.firebaseapp.com",
