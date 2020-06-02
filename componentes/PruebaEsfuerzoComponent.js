@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import { colorGaztaroaOscuro } from '../comun/comun';
+import * as Calendar from 'expo-calendar'
 
 class PruebaEsfuerzo extends Component {
 
@@ -16,8 +17,20 @@ class PruebaEsfuerzo extends Component {
         }
     }
 
-    gestionarReserva() {
-        console.log(JSON.stringify(this.state));
+
+    async gestionarReserva() {
+        const { status } = await Calendar.requestCalendarPermissionsAsync();
+        if (status === 'granted') {
+            const calendars = await Calendar.getCalendarsAsync();
+            const detalles = {
+                title: "Prueba de esfuerzo en Gaztaroa",
+                notes: "Se ha concertado esta prueba de esfuerzo en la aplicación de Gatzaroa",
+                timeZone: "GMT+2",
+                startDate: new Date(this.state.fecha),
+                endDate: new Date(this.state.fecha)
+            };
+            await Calendar.createEventAsync(calendars[0].id, detalles)
+        }
         this.toggleModal();
     }
 
