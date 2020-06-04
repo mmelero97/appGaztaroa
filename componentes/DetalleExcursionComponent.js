@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList, Modal, Alert, StyleSheet, PanResponder } from 'react-native';
-import { Card, Icon, Rating, Input } from 'react-native-elements';
+import { Card, Icon, Button, Rating, Image, Input } from 'react-native-elements';
 import { baseUrl } from '../comun/comun';
 import { connect } from 'react-redux';
 import { postFavorito, postComentario } from '../redux/ActionCreators';
 import * as Animatable from 'react-native-animatable';
 import { useRef } from "react";
+import * as ImagePicker from 'expo-image-picker';
 
 const mapStateToProps = state => {
     return {
@@ -146,9 +147,40 @@ class DetalleExcursion extends Component {
             display: false,
             rate: "3",
             autor: "",
-            comentario: ""
+            comentario: "",
+            image: null
         };
     }
+
+    componentDidMount() {
+        this.getPermissionAsync();
+    }
+
+    getPermissionAsync = async () => {
+        if (Constants.platform.Android) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert('Debe permitir el acceso a los recursos de su dispositivo móvil.');
+            }
+        }
+
+    };
+
+    pickImage = async () => {
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+            if (!result.cancelled) {
+                this.setState({ image: result.uri });
+            }
+        } catch (E) {
+        }
+    };
+
 
     marcarFavorito(excursionId) {
         this.props.postFavorito(excursionId);
@@ -193,6 +225,8 @@ class DetalleExcursion extends Component {
     render() {
         //console.log(this.state.rate);
         const { excursionId } = this.props.route.params;
+        let { image } = this.state;
+        let iconos = <View></View>;
         return (
             <ScrollView>
                 <RenderExcursion
@@ -241,9 +275,13 @@ class DetalleExcursion extends Component {
                         <Text onPress={() => this.closeModal()} style={styles.text}>
                             CANCELAR
                         </Text>
-
-
                     </View>
+
+                    <Card title="Mis imágenes">
+                        <Button title="Selecciona una foto" onPress={this.pickImage} />
+                        <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
+                    </Card>
+
                 </Modal>
 
             </ScrollView>
